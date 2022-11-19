@@ -14,8 +14,17 @@ function setTimeupdate(timeupdate) {
 player.on('timeupdate', throttle(setTimeupdate, 1000));
 
 const currentTime = localStorage.getItem('videoplayer-current-time');
-const parseCurrentTime = JSON.parse(currentTime);
-const seconds = parseCurrentTime.timeupdate.seconds;
+let seconds = '';
+if (currentTime) {
+  try {
+    const parseCurrentTime = JSON.parse(currentTime);
+    seconds = parseCurrentTime.timeupdate.seconds || '';
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+  }
+}
+
 player.setCurrentTime(seconds).catch(function (error) {
   switch (error.name) {
     case 'RangeError':
